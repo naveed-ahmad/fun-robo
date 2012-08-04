@@ -28,10 +28,10 @@ end
 module RoboCommands
   
   def do_place(*args)
-    args = args.split  ',' if agrs.size == 1 && agrs[0].is_a(String)
+    args = args[0].split  ',' if args.size == 1 && args[0].is_a?(String)
     x  = args[0].to_i rescue nil
     y  = args[1].to_i rescue nil
-    face  = arg_parts[2].to_s.upcase
+    face  = args[2].to_s.upcase
     
     if valid_face = @face_map.index(face)
       @x,@y,@direction = x,y,valid_face if @table.within_boundry?(x, y)
