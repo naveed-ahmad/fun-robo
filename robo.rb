@@ -1,6 +1,6 @@
 require 'lib/fun_robo'
 
-@fun_robo = FunRobo.new Table.new(10,10)
+@fun_robo = FunRobo.new TableTop.new(10,10)
 
 if ARGV.any?
   if ARGV.size > 1 #command line parameters are actually commands for Fun Robo

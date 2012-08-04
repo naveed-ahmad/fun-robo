@@ -7,9 +7,12 @@ describe FunRobo do
   let(:robo){ FunRobo.new table }
   subject{ robo }
 
-  context "before PLACE" do
+  context "should not run command before placing on valid position in table" do
     it{ should_not be_ready_for_fun }
-    it{ subject.process_commnad("LEFT").should be_nil }
+    %w[LEFT RIGHT MOVE REPORT].each do |command|
+      it{ subject.process_commnad(command).should be_nil }
+      it{ subject.send("do_#{command.downcase}").should be_nil }
+    end
   end
 end
 
@@ -24,7 +27,7 @@ describe TableTop do
     it{ subject.rows.should == 5}
     it{ subject.columns.should == 5}
   end
-  
+
   context 'should raise ArgumentError on' do
     it 'negative rows' do
       lambda{ TableTop.new(-3, 4)}.should raise_error ArgumentError

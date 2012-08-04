@@ -26,6 +26,7 @@ module RoboGuard
 end
 
 module RoboCommands
+  
   def do_place(*args)
     args = args.split  ',' if agrs.size == 1 && agrs[0].is_a(String)
     x  = args[0].to_i rescue nil
@@ -45,6 +46,7 @@ module RoboCommands
       @y += @movement_map[@direction] if @table.within_boundry?(@x , @y + @movement_map[@direction])
     end
   end
+  
   def do_left
     @direction = (@direction + 90) % 360
   end
