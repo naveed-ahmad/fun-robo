@@ -13,6 +13,6 @@ else #lets set sample 1 as default test cases
 end
 
 @commands.each do |command|
-  @fun_robo.process_commnad(command.chomp)
+  @fun_robo.process_command(command.chomp)
 end
 

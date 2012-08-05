@@ -31,32 +31,33 @@ module RoboCommands
     args = args[0].split  ',' if args.size == 1 && args[0].is_a?(String)
     x  = args[0].to_i rescue nil
     y  = args[1].to_i rescue nil
-    face  = args[2].to_s.upcase
-    
-    if valid_face = @face_map.index(face)
-      @x,@y,@direction = x,y,valid_face if @table.within_boundry?(x, y)
+    valid_face = @face_map.index args[2].to_s.upcase
+
+    if valid_face && @table.within_boundry?(x, y)
+      @x,@y,@face = x,y,valid_face
     end
   end
 
   def do_move
     case current_moving_factor
     when :x
-      @x += @movement_map[@direction] if @table.within_boundry?(@x + @movement_map[@direction] , @y)
+      @x += @movement_map[@face] if @table.within_boundry?(@x + @movement_map[@face] , @y)
     when :y
-      @y += @movement_map[@direction] if @table.within_boundry?(@x , @y + @movement_map[@direction])
+      @y += @movement_map[@face] if @table.within_boundry?(@x , @y + @movement_map[@face])
     end
   end
   
   def do_left
-    @direction = (@direction + 90) % 360
+    @face = (@face + 90) % 360
   end
 
   def do_right
-    @direction = (@direction - 90) % 360
+    @face = (@face - 90) % 360
   end
 
   def do_report
-    puts "Output:  #{@x} , #{@y} , #{@face_map[@direction]}"
+    puts "Output:  #{@x} , #{@y} , #{@face_map[@face]}"
+    true
   end
 end
 
@@ -64,7 +65,7 @@ class FunRobo
   extend RoboGuard
   include RoboCommands
 
-  attr_reader :x, :y, :direction, :table
+  attr_reader :x, :y, :face, :table
   
   def initialize(table)
     @table = table
@@ -72,21 +73,26 @@ class FunRobo
     @face_map = { 0 => 'EAST', 90 =>  'NORTH',180 =>  'WEST',270 => 'SOUTH'}
   end
 
-  def process_commnad(command_str)
-    commnad_parts = command_str.split ' '
-    command,args = commnad_parts[0], commnad_parts[1]
-    if commnad_parts.any?
-      do_place(args) and return if command == 'PLACE'
-      self.send "do_#{command.downcase}" if ready_for_fun?
+  def process_command(command_str)
+    command_parts = command_str.split ' '
+    command,args = command_parts[0], command_parts[1]
+    if command_parts.any?
+      return do_place(args) if command == 'PLACE'
+
+      begin
+        self.send "do_#{command.downcase}"  if ready_for_fun?
+      rescue NoMethodError => e
+        nil
+      end
     end
   end
 
   def ready_for_fun?
-    !!( @x and @y and @direction)
+    !!( @x and @y and @face)
   end
 
   def current_moving_factor
-    [0,180].include?(@direction) ? :x : :y
+    [0,180].include?(@face) ? :x : :y
   end
 
   # lets guard robo commands with ready_for_fun
