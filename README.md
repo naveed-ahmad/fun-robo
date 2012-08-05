@@ -11,8 +11,8 @@ Play with robot
 
 ## How to run FunRobo
   * commands from command line parameters
-        ruby robo.rb 'PLACE 2,2,NORTH' MOVE LEFT MOVE RIGHT  REPORT 'PLAVE 4,3,SOUTH' MOVE REPORT
+        `ruby robo.rb 'PLACE 2,2,NORTH' MOVE LEFT MOVE RIGHT  REPORT 'PLAVE 4,3,SOUTH' MOVE REPORT`
   * commands from file 
-       ruby robo.rb filename
+       `ruby robo.rb filename`
  
 
