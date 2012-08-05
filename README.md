@@ -3,11 +3,11 @@ fun-robo
 Play with robot
 
 ## Valid Commands 
-  *`PLACE x,y,face`
-  *`MOVE`
-  *`LEFT`
-  *`RIGHT`
-  *`REPORT`
+  * PLACE x,y,face 
+  * MOVE 
+  * LEFT 
+  * RIGHT 
+  * REPORT 
 
 ## How to run FunRobo
 give command to FunRobo using following ways:
